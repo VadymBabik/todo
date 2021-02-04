@@ -17,10 +17,10 @@ function createTodoItem(title) {
     id: "checkbox",
   });
   //
-  const label = CHE("label", { className: "title", for: "checkbox" });
+  const label = CHE("label", { className: "title", for: "addInput.value" });
   label.innerText = title;
   //
-  //const editInput = CHE("input", {type: "text", className: "textfield"})
+  const editInput = CHE("input", { type: "text", className: "textfield show" });
   //
   const editButton = CHE("button", { className: "edit btn" });
   editButton.innerText = "edit";
@@ -33,7 +33,8 @@ function createTodoItem(title) {
 
   const todoItemInput = CHE("div", { className: "todo-item__input" });
   todoItemInput.appendChild(checkbox);
-  todoItemInput.appendChild(label /*,editInput*/);
+  todoItemInput.appendChild(label, editInput);
+  todoItemInput.appendChild(editInput);
 
   const todoItemButton = CHE("div", { className: "todo-item__button" });
   todoItemButton.appendChild(editButton);
@@ -41,9 +42,19 @@ function createTodoItem(title) {
 
   listItem.appendChild(todoItemInput);
   listItem.appendChild(todoItemButton);
+  bindEvents(listItem);
   return listItem;
 }
+//
+function bindEvents(todoItem) {
+  const checkbox = todoItem.querySelector(".checkbox");
+  const editButton = todoItem.querySelector("button.edit");
+  const deleteButton = todoItem.querySelector("button.delete");
 
+  checkbox.addEventListener("change", toggleTodoItem);
+  editButton.addEventListener("click", editTodoItem);
+  deleteButton.addEventListener("click", deleteTodoItem);
+}
 //
 function addTodoItem(event) {
   event.preventDefault();
@@ -52,6 +63,45 @@ function addTodoItem(event) {
   }
   const listItems = createTodoItem(addInput.value);
   todoList.appendChild(listItems);
+  addInput.value = "";
+}
+
+const eventTodoItem = (e) => {
+  const todoItemAll = document.querySelectorAll(e);
+  todoItemAll.forEach((item) => {
+    bindEvents(item);
+  });
+};
+eventTodoItem(".todo-item");
+function toggleTodoItem() {
+  const listItems = this.parentNode;
+  const listItemsAll = this.parentNode.parentNode;
+  listItems.classList.toggle("completed");
+  const editButton = listItemsAll.querySelector(".edit");
+  editButton.classList.toggle("show");
+}
+function editTodoItem() {
+  const listItemsIn = this.parentNode.parentNode;
+  const listItems = this.parentNode;
+  const title = listItemsIn.querySelector(".title");
+  const editInput = listItemsIn.querySelector(".textfield");
+  const isEditing = listItemsIn.classList.contains("editing");
+  if (isEditing) {
+    editInput.classList.toggle("show");
+    title.classList.toggle("show");
+    title.textContent = editInput.value;
+    this.textContent = "Edit";
+  } else {
+    editInput.classList.toggle("show");
+    title.classList.toggle("show");
+    editInput.value = title.innerText;
+    this.textContent = "Save";
+  }
+  listItemsIn.classList.toggle("editing");
+}
+function deleteTodoItem() {
+  const listItemsIn = this.parentNode.parentNode;
+  todoList.removeChild(listItemsIn);
 }
 
 const getElement = (e) => document.querySelector(e);
@@ -62,6 +112,7 @@ const todoForm = getElement("#todo-form");
 const addInput = getElement("#add-input");
 const todoList = getElement("#todo-list");
 const todoItems = getElementAll(".todo-item");
+// const todoListAll = getElementAll("#todo-list");
 //
 
 todoForm.addEventListener("submit", addTodoItem);
