@@ -1,3 +1,4 @@
+@import "~reset-css";
 * {
   box-sizing: border-box;
 }
@@ -6,7 +7,7 @@ body {
 }
 
 #main {
-  margin: 200px auto 0;
+  margin: 150px auto 0;
   width: 500px;
   border: 1px solid #333;
 
@@ -16,18 +17,11 @@ body {
     font-size: 30px;
     padding: 10px;
     background-color: aqua;
+    text-transform: uppercase;
   }
 
   .title {
     padding: 10px;
-    //border: 1px solid #333333;
-    &:active {
-      border: 1px solid #ff1313;
-    }
-
-    &:focus {
-      border: 1px solid #ff1313;
-    }
   }
 
   .btn {
@@ -85,6 +79,9 @@ body {
   .show {
     display: none;
   }
+.op {
+    opacity: 0;
+  }
 
   #todo-form {
     background-color: #d0d0d0;
@@ -106,5 +103,15 @@ body {
     &:active {
       background-color: deeppink;
     }
+  }
+
+  .todo-finish{
+    @extend header;
+    font-size: 20px;
+    padding: 8px;
+    background-color: #c8ffaa;
+  }
+  .dn{
+    display: none;
   }
 }
