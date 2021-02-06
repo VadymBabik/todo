@@ -1,4 +1,4 @@
-@import "~reset-css";
+@import "../node_modules/reset-css/sass/reset";
 * {
   box-sizing: border-box;
 }
@@ -79,7 +79,7 @@ body {
   .show {
     display: none;
   }
-.op {
+  .op {
     opacity: 0;
   }
 
@@ -105,13 +105,13 @@ body {
     }
   }
 
-  .todo-finish{
+  .todo-finish {
     @extend header;
     font-size: 20px;
     padding: 8px;
     background-color: #c8ffaa;
   }
-  .dn{
+  .dn {
     display: none;
   }
 }
